@@ -1,0 +1,35 @@
+trigger:
+- main  # Trigger the pipeline on changes to the main branch
+
+pool:
+  vmImage: 'ubuntu-latest'  # Use an Ubuntu agent for the pipeline
+
+steps:
+# Step 1: Checkout the code
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10'  # Specify the Python version
+    addToPath: true
+
+# Step 2: Install dependencies
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+# Step 3: Archive the project
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/functionapp.zip'
+    replaceExistingArchive: true
+
+# Step 4: Deploy to Azure
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: '<YourAzureServiceConnection>'  # Replace with your Azure service connection name
+    appType: 'functionAppLinux'  # Use 'functionAppLinux' for Python
+    appName: '<YourFunctionAppName>'  # Replace with your Function App name
+    package: '$(Build.ArtifactStagingDirectory)/functionapp.zip'
