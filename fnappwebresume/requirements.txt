@@ -2,4 +2,13 @@
 # The Python Worker is managed by the Azure Functions platform
 # Manually managing azure-functions-worker may cause unexpected issues
 
+#INCLUIR
+#librerias requeridas por el componente, cosmos, blob, etc
+#NO INCLUIR
+# dependencias para la ejecución, ( el lenguage que se seleccione para contruir el AZF no se debe incluir en esta sección
+#dependencias del pipeline
+# AZF worker ( in process, isolated
+
+
+
 azure-functions
