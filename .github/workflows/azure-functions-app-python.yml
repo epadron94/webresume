@@ -33,10 +33,10 @@ jobs:
       - name: Install dependencies
         run: |
          python -m pip install --upgrade pip
-         FILE_PATH = "$GITHUB_WORKSPACE/fnappwebresume/requirements.txt"
+         FILE_PATH=find "$GITHUB_WORKSPACE" -type -f -name "requirements.txt"
          if [ ! -f $FILE_PATH ]; 
           then 
-            echo "$GITHUB_WORKSPACE/fnappwebresume/requirements.txt not found"
+            echo "$FILE_PATH not found"
             exit 1
           fi
 
