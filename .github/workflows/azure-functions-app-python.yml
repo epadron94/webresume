@@ -33,15 +33,15 @@ jobs:
       - name: Install dependencies
         run: |
          python -m pip install --upgrade pip
-         if [ ! -f "$GITHUB_WORKSPACE/fnappwebresume/requirements.txt"]; 
-         then 
+         FILE_PATH = "$GITHUB_WORKSPACE/fnappwebresume/requirements.txt"
+         if [ ! -f $FILE_PATH ]; 
+          then 
             echo "$GITHUB_WORKSPACE/fnappwebresume/requirements.txt not found"
             exit 1
           fi
 
           echo "install AZF requirements"
-          FILE_PATH = "$GITHUB_WORKSPACE/fnappwebresume/requirements.txt)
-          pip install -r FILE_PATH
+          pip install -r $FILE_PATH
       
       - name: Archive files
         run: |
