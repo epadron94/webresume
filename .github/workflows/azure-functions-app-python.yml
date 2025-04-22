@@ -40,7 +40,7 @@ jobs:
           fi
 
           echo "install AZF requirements"
-          pip install -r $FILE_PATH
+          pip install -r "$FILE_PATH"
       
       - name: Archive files
         run: |
