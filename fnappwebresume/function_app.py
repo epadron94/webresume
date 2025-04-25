@@ -36,7 +36,7 @@ def getRoleDescriptions(req: func.HttpRequest) -> func.HttpResponse:
         )
 
 @app.route(route="roleDescriptions", methods=["POST"], auth_level= func.AuthLevel.FUNCTION)
-def postRoleDescription(req: func.HttpRequest) -> func.HttpResponse:
+def postRoleDescriptions(req: func.HttpRequest) -> func.HttpResponse:
     try:
         req_body = req.get_json()
 
