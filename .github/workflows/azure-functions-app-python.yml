@@ -42,15 +42,52 @@ jobs:
           echo "install AZF requirements"
           pip install -r "$FILE_PATH"
       
+ 
+      #6
       - name: Archive files
         run: |
-          zip -r functionapp.zip .
+          zip -r functionapp.zip . \
+            -x "**/__pycache__/*" "**/*.pyc" "**/*.pyo" "**/.git/*" \
+            -x "**/.vscode/*" "**/.github/*" "**/tests/*"
+            -x "**/.venv/*"
 
 
+      #validate critial files
+      - name : validate critial files
+        run: |
+          unzip -l functionapp.zip
+          if !unzip -l functionapp.zip | grep -q "host.json"; then
+            echo "host.json missing, cannot procceed"
+            exit 1
+          fi
+          if ! unzip -l functionapp.zip | grep -q "requirements.txt"; then
+            echo "requirements.txt missing, cannot procceed"
+            exit 1
+          fi
+          if ! unzip -l functionapp.zip | grep -q "function_app.py"; then
+            echo "functon_app.py missing, cannot procceed"
+            exit 1
+          fi
+      #save artifact
+      - name : Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: fnapproledescriptions-pkg-${{github.run_id}}
+          path: functionapp.zip
 
-      - name: Deploy
+      #9 debug artifact
+      - name: Debug
+        if: failure()
+        run: |
+          mkdir debug_artifact
+          unzip functionapp.zip -d debug_artifact
+          ls -R debug_artifact
+      #7
+      - name: deploy
         uses: Azure/functions-action@v1
         with:
-          app-name: 'fnapproledescriptions'
+          app-name: fnapproledescriptions
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
           package: functionapp.zip
+
+      #8 GET logs
