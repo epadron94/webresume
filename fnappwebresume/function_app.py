@@ -12,7 +12,7 @@ import logging
 
 
 app = func.FunctionApp() # registro central de las functions
-app.function_name = "fnappwebresume" # nombre de la function app, se puede cambiar en el portal de azure
+#app.function_name = "fnappwebresume" # nombre de la function app, se puede cambiar en el portal de azure
 @app.route(route="roleDescriptions",methods=["GET"], auth_level=func.AuthLevel.FUNCTION)# cada function utiliza ste metodo para registrar su url, HTTP methods
 #Cuales son las config del app.route?
 def getRoleDescriptions(req: func.HttpRequest) -> func.HttpResponse:
