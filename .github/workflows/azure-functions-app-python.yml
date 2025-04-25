@@ -46,8 +46,15 @@ jobs:
         run: |
           zip -r functionapp.zip .
 
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: functionapp.zip
+          
+
       - name: Deploy
         uses: Azure/functions-action@v1
         with:
           app-name: 'fnapproledescriptions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          package: functionapp.zip
