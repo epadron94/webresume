@@ -12,8 +12,8 @@ import logging
 
 
 app = func.FunctionApp() # registro central de las functions
-
-@app.route(route="roleDescriptions",methods=["GET"], auth_level=func.AuthLevel.ANONYMOUS)# cada function utiliza ste metodo para registrar su url, HTTP methods
+app.function_name = "fnappwebresume" # nombre de la function app, se puede cambiar en el portal de azure
+@app.route(route="roleDescriptions",methods=["GET"], auth_level=func.AuthLevel.FUNCTION)# cada function utiliza ste metodo para registrar su url, HTTP methods
 #Cuales son las config del app.route?
 def getRoleDescriptions(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
@@ -35,7 +35,7 @@ def getRoleDescriptions(req: func.HttpRequest) -> func.HttpResponse:
             status_code=200
         )
 
-@app.route(route="roleDescriptions", methods=["POST"], auth_level= func.AuthLevel.ANONYMOUS)
+@app.route(route="roleDescriptions", methods=["POST"], auth_level= func.AuthLevel.FUNCTION)
 def postRoleDescriptions(req: func.HttpRequest) -> func.HttpResponse:
     try:
         req_body = req.get_json()
